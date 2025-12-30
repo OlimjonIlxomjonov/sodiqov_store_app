@@ -11,7 +11,10 @@ class DioClient {
           baseUrl: ApiUrls.baseUrl,
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
-          headers: {'Accept': 'application/json'},
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
         ),
       ) {
     // Logging
@@ -44,7 +47,7 @@ class DioClient {
 
   factory DioClient() => _instance;
 
-/// {OPTIONAL}
+  /// {OPTIONAL}
   // void setToken(String token) {
   //   _dio.options.headers['Authorization'] = "Bearer $token";
   // }

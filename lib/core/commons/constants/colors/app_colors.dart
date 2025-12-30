@@ -9,6 +9,7 @@ abstract class AppColors {
   static const Color cardBackground = Color(0xffF9FAFB);
   static const Color red = Color(0xffDC2626);
   static const Color yellow = Color(0xffFFEB3B);
+  static const Color blue = Color(0xff2196F3);
 }
 
 class _GreyScale {
