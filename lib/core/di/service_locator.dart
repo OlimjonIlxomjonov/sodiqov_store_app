@@ -6,8 +6,10 @@ import 'package:my_template/features/home/data/source/remote_data_source/home_re
 import 'package:my_template/features/home/domain/repository/home_repository.dart';
 import 'package:my_template/features/home/domain/usecase/category/category_use_case.dart';
 import 'package:my_template/features/home/domain/usecase/products/products_use_case.dart';
+import 'package:my_template/features/home/domain/usecase/products_by_slug/products_by_slug_use_case.dart';
 import 'package:my_template/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_bloc.dart';
+import 'package:my_template/features/home/presentation/bloc/products_by_slug/products_by_slug_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -25,8 +27,10 @@ Future<void> setup() async {
   /// USE CASE
   sl.registerLazySingleton(() => CategoryUseCase(sl()));
   sl.registerLazySingleton(() => ProductsUseCase(sl()));
+  sl.registerLazySingleton(() => ProductsBySlugUseCase(sl()));
 
   /// BLOC
   sl.registerLazySingleton(() => CategoryBloc(sl()));
   sl.registerLazySingleton(() => ProductsBloc(sl()));
+  sl.registerLazySingleton(() => ProductsBySlugBloc(sl()));
 }

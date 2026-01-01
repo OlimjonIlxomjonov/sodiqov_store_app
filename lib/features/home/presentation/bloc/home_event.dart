@@ -9,3 +9,9 @@ class ProductsEvent extends HomeEvent {
 
   ProductsEvent(this.page);
 }
+
+class ProductsBySlugEvent extends HomeEvent {
+  final String slug;
+
+  ProductsBySlugEvent(this.slug);
+}

@@ -11,110 +11,119 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: AppColors.green),
-              onPressed: () => AppRoute.close(),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: AppColors.white,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              floating: true,
+              pinned: false,
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: AppColors.green),
+                onPressed: () => AppRoute.close(),
+              ),
+              title: Text(
+                'Savatcha',
+                style: AppTextStyles.source.semiBold(fontSize: 16),
+              ),
+              centerTitle: true,
             ),
-            title: Text(
-              'Savatcha',
-              style: AppTextStyles.source.semiBold(fontSize: 16),
-            ),
-            centerTitle: true,
-          ),
-          SliverPadding(
-            padding: EdgeInsets.only(bottom: appH(10)),
-            sliver: SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.greyScale.grey200),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: appW(15),
-                    vertical: appH(15),
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: appW(15),
-                    vertical: appH(10),
-                  ),
+            SliverPadding(
+              padding: EdgeInsets.only(bottom: appH(10)),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.greyScale.grey200),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: appW(15),
+                      vertical: appH(15),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: appW(15),
+                      vertical: appH(10),
+                    ),
 
-                  child: Row(
-                    spacing: appW(10),
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.cardBackground,
-                          border: Border.all(
-                            color: AppColors.greyScale.grey400,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: appW(20),
-                          vertical: appH(20),
-                        ),
-                        child: Icon(IconlyLight.close_square),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Head&Shoulders",
-                            style: AppTextStyles.source.medium(fontSize: 14),
-                          ),
-                          Text(
-                            "Soch yuvish",
-                            style: AppTextStyles.source.regular(
-                              fontSize: 12,
-                              color: AppColors.greyScale.grey600,
+                    child: Row(
+                      spacing: appW(10),
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.cardBackground,
+                            border: Border.all(
+                              color: AppColors.greyScale.grey400,
                             ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          SizedBox(height: appH(10)),
-                          Text(
-                            '120 000 UZS',
-                            style: AppTextStyles.source.semiBold(fontSize: 15),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: appW(20),
+                            vertical: appH(20),
                           ),
-                        ],
-                      ),
-                      Expanded(child: Container()),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        spacing: appH(20),
-                        children: [
-                          Icon(IconlyLight.delete, color: AppColors.red),
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: appW(8),
-                              vertical: appH(5),
+                          child: Icon(IconlyLight.close_square),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Head&Shoulders",
+                              style: AppTextStyles.source.medium(fontSize: 14),
                             ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: AppColors.greyScale.grey300,
+                            Text(
+                              "Soch yuvish",
+                              style: AppTextStyles.source.regular(
+                                fontSize: 12,
+                                color: AppColors.greyScale.grey600,
                               ),
                             ),
-                            child: Row(
-                              spacing: appW(20),
-                              children: [
-                                addOrRemoveContainer(Icons.remove),
-                                Text('1'),
-                                addOrRemoveContainer(Icons.add),
-                              ],
+                            SizedBox(height: appH(10)),
+                            Text(
+                              '120 000 UZS',
+                              style: AppTextStyles.source.semiBold(
+                                fontSize: 15,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }, childCount: 10),
+                          ],
+                        ),
+                        Expanded(child: Container()),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          spacing: appH(20),
+                          children: [
+                            Icon(IconlyLight.delete, color: AppColors.red),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: appW(8),
+                                vertical: appH(5),
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: AppColors.greyScale.grey300,
+                                ),
+                              ),
+                              child: Row(
+                                spacing: appW(20),
+                                children: [
+                                  addOrRemoveContainer(Icons.remove),
+                                  Text('1'),
+                                  addOrRemoveContainer(Icons.add),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }, childCount: 10),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
