@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconly/iconly.dart';
-import 'package:intl/intl.dart';
 import 'package:my_template/core/commons/assets/app_vectors.dart';
-import 'package:my_template/core/commons/constants/api_urls/api_urls.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/cart/presentation/screens/cart_page.dart';
-import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_state.dart';
 import 'package:my_template/features/home/presentation/screens/components/full_categories_component.dart';
@@ -18,6 +15,7 @@ import 'package:my_template/features/home/presentation/screens/components/full_p
 import 'package:my_template/features/home/presentation/screens/drawer/app_drawer.dart';
 import 'package:my_template/features/home/presentation/screens/widget/product_card.dart';
 
+import '../../../../core/services/cart_storage/cart_storage.dart';
 import '../bloc/category/category_bloc.dart';
 import '../bloc/category/category_state.dart';
 import '../bloc/home_event.dart';
@@ -30,11 +28,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int cartCount = 0;
+
   @override
   void initState() {
     super.initState();
+    _loadCartCount();
     context.read<CategoryBloc>().add(CategoryEvent());
     context.read<ProductsBloc>().add(ProductsEvent(1));
+  }
+
+  Future<void> _loadCartCount() async {
+    final items = await CartStorage.getCartWithQuantity();
+    setState(() {
+      cartCount = items.fold<int>(
+        0,
+        (sum, item) => sum + (item['quantity'] as int),
+      );
+    });
+  }
+
+  void refreshCartCount() async {
+    final items = await CartStorage.getCartWithQuantity();
+    setState(() {
+      cartCount = items.fold<int>(
+        0,
+        (sum, item) => sum + (item['quantity'] as int),
+      );
+    });
   }
 
   @override
@@ -68,17 +89,54 @@ class _HomePageState extends State<HomePage> {
                         color: AppColors.green,
                       ),
                       Expanded(child: Container()),
-                      IconButton(
-                        style: IconButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: BorderSide(color: AppColors.greenFade),
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          IconButton(
+                            style: IconButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: AppColors.greenFade),
+                              ),
+                            ),
+                            onPressed: () async {
+                              AppRoute.go(
+                                CartPage(onCartChanged: refreshCartCount),
+                              );
+                              _loadCartCount();
+                            },
+                            icon: Icon(
+                              IconlyLight.bag_2,
+                              color: AppColors.green,
+                            ),
                           ),
-                        ),
-                        onPressed: () {
-                          AppRoute.go(CartPage());
-                        },
-                        icon: Icon(IconlyLight.bag_2, color: AppColors.green),
+                          if (cartCount > 0)
+                            Positioned(
+                              right: 4,
+                              top: 4,
+                              child: Container(
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                constraints: BoxConstraints(
+                                  minWidth: 18,
+                                  minHeight: 18,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '$cartCount',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                       Builder(
                         builder: (context) {
@@ -280,11 +338,27 @@ class _HomePageState extends State<HomePage> {
                           childAspectRatio: 0.50,
                         ),
                         delegate: SliverChildBuilderDelegate(
-                          (context, index) => ProductCard(
-                            item: products[index],
-                            enableHero: true,
-                          ),
-                          childCount: products.length,
+                          (context, index) {
+                            if (index < products.length) {
+                              return ProductCard(
+                                item: products[index],
+                                enableHero: true,
+                                onAddToCart: () {
+                                  refreshCartCount();
+                                },
+                              );
+                            } else if (state.isLoadingMore) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.green,
+                                ),
+                              );
+                            } else {
+                              return SizedBox.shrink();
+                            }
+                          },
+                          childCount:
+                              products.length + (state.isLoadingMore ? 1 : 0),
                         ),
                       ),
                     );
@@ -292,7 +366,7 @@ class _HomePageState extends State<HomePage> {
                     return SliverToBoxAdapter(
                       child: Center(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: EdgeInsets.only(top: appH(50)),
                           child: CircularProgressIndicator(
                             color: AppColors.green,
                           ),

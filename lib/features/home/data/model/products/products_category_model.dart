@@ -16,4 +16,8 @@ class ProductsCategoryModel extends ProductsCategoryEntity {
       name: LocalizedTextModel.fromJson(json['name']),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, "slug": slug, 'name': name};
+  }
 }

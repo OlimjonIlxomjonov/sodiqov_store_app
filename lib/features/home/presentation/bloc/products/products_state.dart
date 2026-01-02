@@ -10,8 +10,9 @@ class ProductsLoading extends ProductsState {}
 
 class ProductsLoaded extends ProductsState {
   final ProductsResponse response;
+  final bool isLoadingMore;
 
-  ProductsLoaded(this.response);
+  ProductsLoaded(this.response, {this.isLoadingMore = false});
 }
 
 class ProductsError extends ProductsState {}

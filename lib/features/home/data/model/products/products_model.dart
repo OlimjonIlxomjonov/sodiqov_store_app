@@ -19,9 +19,9 @@ class ProductsModel extends ProductsEntity {
       id: json['id'],
       slug: json['slug'],
       name: LocalizedTextModel.fromJson(json['name']),
-      price: double.parse(json['price']),
+      price: double.parse(json['price'].toString()),
       oldPrice: json['old_price'] != null
-          ? double.parse(json['old_price'])
+          ? double.parse(json['old_price'].toString())
           : null,
       images: List<String>.from(json['images']),
       category: ProductsCategoryModel.fromJson(json['category']),

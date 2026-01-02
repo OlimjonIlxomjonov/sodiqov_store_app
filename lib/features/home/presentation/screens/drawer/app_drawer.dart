@@ -4,7 +4,9 @@ import 'package:iconly/iconly.dart';
 import 'package:my_template/core/commons/assets/app_vectors.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
+import 'package:my_template/features/favourites/presentation/screens/favourites_page.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -43,26 +45,27 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(IconlyBold.heart, color: AppColors.red),
-            title: Text("Favourites"),
+            title: Text("Sevimlilar"),
             onTap: () {
               Navigator.pop(context);
+              AppRoute.go(FavouritesPage());
             },
           ),
-          Divider(color: AppColors.greyScale.grey300),
-          ListTile(
-            iconColor: AppColors.red,
-            leading: Icon(IconlyLight.logout),
-            title: Text(
-              'LogOut',
-              style: AppTextStyles.source.regular(
-                fontSize: 15,
-                color: AppColors.red,
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
+          // Divider(color: AppColors.greyScale.grey300),
+          // ListTile(
+          //   iconColor: AppColors.red,
+          //   leading: Icon(IconlyLight.logout),
+          //   title: Text(
+          //     'LogOut',
+          //     style: AppTextStyles.source.regular(
+          //       fontSize: 15,
+          //       color: AppColors.red,
+          //     ),
+          //   ),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
         ],
       ),
     );

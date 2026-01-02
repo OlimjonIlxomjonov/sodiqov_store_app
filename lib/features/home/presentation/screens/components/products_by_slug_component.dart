@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
@@ -8,6 +6,8 @@ import 'package:my_template/features/home/domain/entity/products/products_entity
 import '../../../../../core/commons/constants/colors/app_colors.dart';
 import '../../../../../core/commons/constants/textstyles/app_text_style.dart';
 import '../../../../../core/routes/route_generator.dart';
+import '../../../../../core/services/cart_storage/cart_storage.dart';
+import '../../../../../core/services/liked_product_storage/liked_product_storage.dart';
 
 class ProductsBySlugComponent extends StatefulWidget {
   final ProductsEntity product;
@@ -24,6 +24,18 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
   final _priceFormatter = NumberFormat('#,##0', 'en_US');
   int productAmount = 1;
   int _currentIndex = 0;
+  bool _isFav = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFav();
+  }
+
+  Future<void> _loadFav() async {
+    _isFav = await FavoritesStorage.isFavorite(widget.product.id);
+    setState(() {});
+  }
 
   String formatPrice(num price) {
     return _priceFormatter.format(price);
@@ -66,13 +78,14 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
               ),
               actions: [
                 IconButton(
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.grey.shade200.withValues(
-                      alpha: 0.3,
-                    ),
+                  onPressed: () async {
+                    await FavoritesStorage.toggleFavorite(widget.product);
+                    setState(() => _isFav = !_isFav);
+                  },
+                  icon: Icon(
+                    _isFav ? Icons.favorite : Icons.favorite_border,
+                    color: _isFav ? Colors.red : Colors.grey,
                   ),
-                  onPressed: () {},
-                  icon: Icon(IconlyLight.heart, color: AppColors.green),
                 ),
               ],
             ),
@@ -345,7 +358,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                             ),
                           ),
                           Text(
-                            formatPrice(widget.product.price * productAmount),
+                            "${formatPrice(widget.product.price * productAmount)} so'm",
                             style: AppTextStyles.source.medium(fontSize: 16),
                           ),
                         ],
@@ -356,7 +369,21 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(double.infinity, appH(45)),
                         ),
-                        onPressed: () {},
+                        onPressed: () async {
+                          await CartStorage.addProduct(
+                            widget.product,
+                            quantity: productAmount,
+                          );
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '${widget.product.name.uz} savatga qo\'shildi',
+                              ),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                        },
                         child: Row(
                           spacing: appW(5),
                           mainAxisAlignment: .center,

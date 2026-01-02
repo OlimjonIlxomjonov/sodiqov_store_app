@@ -75,8 +75,8 @@ class _FullProductsComponentState extends State<FullProductsComponent> {
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: AppColors.green),
                   onPressed: () {
-                    AppRoute.close();
                     context.read<ProductsBloc>().add(ProductsEvent(1));
+                    AppRoute.close();
                   },
                 ),
                 title: Text(

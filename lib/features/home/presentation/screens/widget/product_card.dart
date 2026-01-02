@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
-import 'package:my_template/core/routes/route_generator.dart';
+import 'package:my_template/core/services/liked_product_storage/liked_product_storage.dart';
 import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
 import 'package:my_template/features/home/presentation/bloc/home_event.dart';
 import 'package:my_template/features/home/presentation/bloc/products_by_slug/products_by_slug_bloc.dart';
@@ -10,13 +10,20 @@ import 'package:my_template/features/home/presentation/screens/components/produc
 
 import '../../../../../core/commons/constants/colors/app_colors.dart';
 import '../../../../../core/commons/constants/textstyles/app_text_style.dart';
+import '../../../../../core/services/cart_storage/cart_storage.dart';
 import '../../../../../core/utils/responsiveness/app_responsiveness.dart';
 
 class ProductCard extends StatefulWidget {
   final ProductsEntity item;
   final bool enableHero;
+  final VoidCallback? onAddToCart;
 
-  const ProductCard({super.key, required this.item, this.enableHero = false});
+  const ProductCard({
+    super.key,
+    required this.item,
+    this.enableHero = false,
+    this.onAddToCart,
+  });
 
   @override
   State<ProductCard> createState() => _ProductCardState();
@@ -24,6 +31,18 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   final _priceFormatter = NumberFormat('#,##0', 'en_US');
+  bool _isFav = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadFav();
+  }
+
+  Future<void> _loadFav() async {
+    _isFav = await FavoritesStorage.isFavorite(widget.item.id);
+    setState(() {});
+  }
 
   String formatPrice(num price) {
     return _priceFormatter.format(price);
@@ -132,10 +151,26 @@ class _ProductCardState extends State<ProductCard> {
                         ),
                         IconButton(
                           style: IconButton.styleFrom(
-                            backgroundColor: AppColors.greenFade,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            backgroundColor: AppColors.green,
                           ),
-                          onPressed: () {},
-                          icon: Icon(Icons.add, color: AppColors.green),
+                          onPressed: () async {
+                            await CartStorage.addProduct(widget.item);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '${widget.item.name.uz} savatchaga qo\'shildi',
+                                ),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
+
+                            widget.onAddToCart?.call();
+                          },
+                          icon: Icon(Icons.add, color: AppColors.white),
                         ),
                       ],
                     ),
@@ -187,11 +222,17 @@ class _ProductCardState extends State<ProductCard> {
 
                 /// HEART BUTTON
                 IconButton(
+                  onPressed: () async {
+                    await FavoritesStorage.toggleFavorite(widget.item);
+                    setState(() => _isFav = !_isFav);
+                  },
                   style: IconButton.styleFrom(
-                    backgroundColor: Colors.grey.withValues(alpha: 0.2),
+                    backgroundColor: AppColors.white.withValues(alpha: 0.2),
                   ),
-                  onPressed: () {},
-                  icon: Icon(IconlyBold.heart, color: AppColors.green),
+                  icon: Icon(
+                    _isFav ? IconlyBold.heart : IconlyLight.heart,
+                    color: _isFav ? Colors.red : Colors.black,
+                  ),
                 ),
               ],
             ),
@@ -200,11 +241,9 @@ class _ProductCardState extends State<ProductCard> {
       ),
     );
 
-    // ✅ HERO ONLY WHEN ENABLED
     if (widget.enableHero) {
       return Hero(tag: heroTag, child: content);
     }
-
     return content;
   }
 }

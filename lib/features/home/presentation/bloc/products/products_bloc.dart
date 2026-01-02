@@ -8,22 +8,29 @@ class ProductsBloc extends Bloc<HomeEvent, ProductsState> {
 
   ProductsBloc(this.useCase) : super(ProductsInitial()) {
     on<ProductsEvent>((event, emit) async {
-      // emit(ProductsLoading());
       try {
-        final response = await useCase.call(page: event.page);
-        if (event.page > 1 && state is ProductsLoaded) {
-          final oldState = state as ProductsLoaded;
+        if (event.page == 1) {
+          emit(ProductsLoading());
+          final response = await useCase.call(page: event.page);
+          emit(ProductsLoaded(response));
+          return;
+        }
 
+        if (state is ProductsLoaded) {
+          final oldState = state as ProductsLoaded;
           if (event.page > oldState.response.paginationMeta.lastPage) return;
+
+          emit(ProductsLoaded(oldState.response, isLoadingMore: true));
+
+          final response = await useCase.call(page: event.page);
 
           final updatedData = [...oldState.response.data, ...response.data];
           final updatedResponse = response.copyWith(
             data: updatedData,
             paginationMeta: response.paginationMeta,
           );
+
           emit(ProductsLoaded(updatedResponse));
-        } else {
-          emit(ProductsLoaded(response));
         }
       } catch (e) {
         emit(ProductsError());
