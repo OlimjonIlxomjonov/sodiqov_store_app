@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/features/home/presentation/bloc/home_event.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_bloc.dart';
 import '../../../../core/commons/constants/colors/app_colors.dart';
@@ -50,7 +51,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
                 },
               ),
               title: Text(
-                'Sevimlilar',
+                context.localizations.favourites,
                 style: AppTextStyles.source.semiBold(fontSize: 16),
               ),
             ),

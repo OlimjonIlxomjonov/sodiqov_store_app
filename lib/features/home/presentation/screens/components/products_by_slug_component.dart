@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
 
@@ -206,7 +207,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                       margin: EdgeInsets.only(bottom: appH(5)),
                       decoration: BoxDecoration(color: AppColors.greenFade),
                       child: Text(
-                        widget.product.category.name.uz,
+                        widget.product.category.name.byLocale(context.locale),
                         style: AppTextStyles.source.regular(
                           fontSize: 12,
                           color: AppColors.green,
@@ -214,7 +215,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                       ),
                     ),
                     Text(
-                      widget.product.name.uz,
+                      widget.product.name.byLocale(context.locale),
                       style: AppTextStyles.source.medium(fontSize: 15),
                     ),
                     SizedBox(height: appH(20)),
@@ -233,7 +234,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                         crossAxisAlignment: .start,
                         children: [
                           Text(
-                            'NARX',
+                            context.localizations.productCost.toUpperCase(),
                             style: AppTextStyles.source.regular(
                               fontSize: 12,
                               color: AppColors.greyScale.grey600,
@@ -242,7 +243,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                           if (widget.product.oldPrice != null &&
                               widget.product.oldPrice! > widget.product.price)
                             Text(
-                              "${formatPrice(widget.product.oldPrice!)} so'm",
+                              "${formatPrice(widget.product.oldPrice!)} UZS",
                               style: TextStyle(
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: AppResponsiveness.heigh(14),
@@ -250,7 +251,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                               ),
                             ),
                           Text(
-                            "${formatPrice(widget.product.price)} so'm",
+                            "${formatPrice(widget.product.price)} UZS",
                             style: AppTextStyles.source.medium(
                               fontSize: 22,
                               color: AppColors.green,
@@ -277,7 +278,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                           ),
                         ),
                         Text(
-                          'Mahsulot haqida',
+                          context.localizations.productInfo,
                           style: AppTextStyles.source.medium(fontSize: 16),
                         ),
                       ],
@@ -291,7 +292,10 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                       ),
                     ),
                     SizedBox(height: appH(20)),
-                    middleCard('Omborda', '— dona'),
+                    middleCard(
+                      context.localizations.omborda,
+                      '— ${context.localizations.storage}',
+                    ),
                   ],
                 ),
               ),
@@ -316,7 +320,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                   mainAxisAlignment: .spaceBetween,
                   children: [
                     Text(
-                      'Miqdor',
+                      context.localizations.productAmount,
                       style: AppTextStyles.source.regular(
                         fontSize: 12,
                         color: AppColors.greyScale.grey600,
@@ -351,14 +355,14 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                         crossAxisAlignment: .start,
                         children: [
                           Text(
-                            'Jami',
+                            context.localizations.totalCost,
                             style: AppTextStyles.source.regular(
                               fontSize: 12,
                               color: AppColors.greyScale.grey600,
                             ),
                           ),
                           Text(
-                            "${formatPrice(widget.product.price * productAmount)} so'm",
+                            "${formatPrice(widget.product.price * productAmount)} UZS",
                             style: AppTextStyles.source.medium(fontSize: 16),
                           ),
                         ],
@@ -378,7 +382,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                '${widget.product.name.uz} savatga qo\'shildi',
+                                '${widget.product.name.byLocale(context.locale)} savatga qo\'shildi',
                               ),
                               duration: Duration(seconds: 1),
                             ),
@@ -389,7 +393,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                           mainAxisAlignment: .center,
                           children: [
                             Icon(Icons.shopping_cart_outlined),
-                            Text('Savatga'),
+                            Text(context.localizations.toCart),
                           ],
                         ),
                       ),

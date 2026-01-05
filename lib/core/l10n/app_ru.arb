@@ -1,0 +1,22 @@
+{
+  "@@locale": "ru",
+  "language": "Русский язык",
+  "@language": {
+    "description": "Выбранный язык"
+  },
+  "kategories": "Категории",
+  "popularProducts": "Популярные продукты",
+  "search": "Искать...",
+  "favourites": "Избранное",
+  "clear": "Очистить",
+  "cart": "Корзина",
+  "productInfo": "О продукте",
+  "omborda": "Осталось",
+  "storage": "шт",
+  "productAmount": "Количество",
+  "totalCost": "Общий",
+  "toCart": "В корзину",
+  "allProducts": "Bce продукты",
+  "productCost": "Цена",
+  "orderProduct": "Оформить"
+}

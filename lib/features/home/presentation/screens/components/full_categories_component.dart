@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 
@@ -22,7 +23,7 @@ class FullCategoriesComponent extends StatelessWidget {
           onPressed: () => AppRoute.close(),
         ),
         title: Text(
-          'Kategoriyalar',
+          context.localizations.kategories,
           style: AppTextStyles.source.semiBold(fontSize: 16),
         ),
         centerTitle: true,
@@ -55,7 +56,7 @@ class FullCategoriesComponent extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          category.name.uz,
+                          category.name.byLocale(context.locale),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.source.medium(

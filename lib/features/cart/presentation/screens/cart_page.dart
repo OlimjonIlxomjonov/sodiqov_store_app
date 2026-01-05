@@ -5,6 +5,7 @@ import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -138,7 +139,7 @@ class _CartPageState extends State<CartPage> {
                       onPressed: () => AppRoute.close(),
                     ),
                     title: Text(
-                      'Savatcha',
+                      context.localizations.cart,
                       style: AppTextStyles.source.semiBold(fontSize: 16),
                     ),
                     actions: [
@@ -159,7 +160,7 @@ class _CartPageState extends State<CartPage> {
                           children: [
                             Icon(IconlyLight.delete, color: AppColors.red),
                             Text(
-                              'Tozalash',
+                              context.localizations.clear,
                               style: AppTextStyles.source.regular(
                                 fontSize: 13,
                                 color: AppColors.red,
@@ -224,14 +225,18 @@ class _CartPageState extends State<CartPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                item.name.uz,
+                                                item.name.byLocale(
+                                                  context.locale,
+                                                ),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: AppTextStyles.source
                                                     .medium(fontSize: 14),
                                               ),
                                               Text(
-                                                item.category.name.uz,
+                                                item.category.name.byLocale(
+                                                  context.locale,
+                                                ),
                                                 style: AppTextStyles.source
                                                     .regular(
                                                       fontSize: 12,
@@ -323,7 +328,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                   onPressed: () {},
                   child: Text(
-                    'Buyurtma berish',
+                    context.localizations.orderProduct,
                     style: AppTextStyles.source.medium(fontSize: 14),
                   ),
                 ),

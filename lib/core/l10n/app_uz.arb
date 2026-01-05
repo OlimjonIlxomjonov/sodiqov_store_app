@@ -1,0 +1,22 @@
+{
+  "@@locale": "uz",
+  "language": "Uzbek tili",
+  "@language": {
+    "description": "Tanlangan til"
+  },
+  "kategories": "Kategoriyalar",
+  "popularProducts": "Ommabop mahsilotlar",
+  "search": "Qidirish...",
+  "favourites": "Sevimlilar",
+  "clear": "Tozalash",
+  "cart": "Savatcha",
+  "productInfo": "Mahsulot haqida",
+  "omborda": "Omborda",
+  "storage": "dona",
+  "productAmount": "Miqdor",
+  "totalCost": "Jami",
+  "toCart": "Savatga",
+  "allProducts": "Barcha mahsulotlar",
+  "productCost": "Narx",
+  "orderProduct": "Buyurtma berish"
+}

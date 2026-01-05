@@ -10,4 +10,6 @@ class LocalizedTextModel extends LocalizedTextEntity {
   Map<String, dynamic> toJson() {
     return {'uz': uz, 'ru': ru};
   }
+
+
 }

@@ -4,6 +4,7 @@ import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
@@ -80,7 +81,7 @@ class _FullProductsComponentState extends State<FullProductsComponent> {
                   },
                 ),
                 title: Text(
-                  'Barcha mahsulotlar',
+                  context.localizations.allProducts,
                   style: AppTextStyles.source.semiBold(fontSize: 16),
                 ),
               ),

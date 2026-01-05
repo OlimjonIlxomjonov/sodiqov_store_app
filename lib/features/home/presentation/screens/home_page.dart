@@ -5,6 +5,7 @@ import 'package:iconly/iconly.dart';
 import 'package:my_template/core/commons/assets/app_vectors.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/cart/presentation/screens/cart_page.dart';
@@ -178,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         border: InputBorder.none,
-                        hintText: 'Qidirish...',
+                        hintText: context.localizations.search,
                         hintStyle: AppTextStyles.source.regular(
                           fontSize: 14,
                           color: AppColors.greyScale.grey400,
@@ -219,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Kategoriyalar'.toUpperCase(),
+                                context.localizations.kategories.toUpperCase(),
                                 style: AppTextStyles.source.semiBold(
                                   fontSize: 14,
                                 ),
@@ -236,6 +237,7 @@ class _HomePageState extends State<HomePage> {
 
                       BlocBuilder<CategoryBloc, CategoryState>(
                         builder: (context, state) {
+
                           if (state is CategoryLoaded) {
                             return SizedBox(
                               height: appH(45),
@@ -265,7 +267,9 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          category.name.uz,
+                                          category.name.byLocale(
+                                            context.locale,
+                                          ),
                                           style: AppTextStyles.source.medium(
                                             fontSize: 14,
                                             color: AppColors.greyScale.grey900,
@@ -312,7 +316,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Ommabop mahsulotlar'.toUpperCase(),
+                          context.localizations.popularProducts.toUpperCase(),
                           style: AppTextStyles.source.semiBold(fontSize: 14),
                         ),
                         Icon(IconlyLight.arrow_right, color: AppColors.green),

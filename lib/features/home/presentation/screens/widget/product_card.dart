@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
+import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/services/liked_product_storage/liked_product_storage.dart';
 import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
 import 'package:my_template/features/home/presentation/bloc/home_event.dart';
@@ -117,13 +118,13 @@ class _ProductCardState extends State<ProductCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.item.name.uz,
+                      widget.item.name.byLocale(context.locale),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.source.medium(fontSize: 14),
                     ),
                     Text(
-                      widget.item.category.name.uz,
+                      widget.item.category.name.byLocale(context.locale),
                       style: AppTextStyles.source.regular(fontSize: 12),
                     ),
                     Expanded(child: Container()),
