@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/features/cart/presentation/bloc/order/order_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/products_by_slug/products_by_slug_bloc.dart';
@@ -20,6 +21,7 @@ class MyBlocProvider extends StatelessWidget {
         BlocProvider<ProductsBySlugBloc>(
           create: (context) => sl<ProductsBySlugBloc>(),
         ),
+        BlocProvider<OrderBloc>(create: (context) => sl<OrderBloc>()),
       ],
       child: child,
     );

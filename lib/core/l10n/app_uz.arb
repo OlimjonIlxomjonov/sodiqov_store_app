@@ -18,5 +18,6 @@
   "toCart": "Savatga",
   "allProducts": "Barcha mahsulotlar",
   "productCost": "Narx",
-  "orderProduct": "Buyurtma berish"
+  "orderProduct": "Buyurtma berish",
+  "purchaseHistory": "Buyurtmalarim"
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:my_template/core/commons/constants/api_urls/api_urls.dart';
 import 'package:my_template/core/network/dio_client.dart';
 import 'package:my_template/core/utils/logger/logger.dart';
@@ -39,7 +40,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
         throw Exception('ERROR OCCURRED: ${response.statusCode}');
       }
     } catch (e) {
-      logger.e('ERROR $e');
+      if (e is DioException) {
+        if (e.type == DioExceptionType.connectionError ||
+            e.type == DioExceptionType.connectionTimeout) {}
+      }
       rethrow;
     }
   }

@@ -237,7 +237,6 @@ class _HomePageState extends State<HomePage> {
 
                       BlocBuilder<CategoryBloc, CategoryState>(
                         builder: (context, state) {
-
                           if (state is CategoryLoaded) {
                             return SizedBox(
                               height: appH(45),

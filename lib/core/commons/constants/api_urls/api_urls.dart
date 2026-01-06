@@ -8,4 +8,7 @@ abstract class ApiUrls {
 
   /// products
   static const products = 'products';
+
+  /// post order
+  static const order = 'orders';
 }

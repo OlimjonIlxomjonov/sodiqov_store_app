@@ -45,14 +45,11 @@ class CartStorage {
     final index = items.indexWhere((e) => e['product'].id == product.id);
 
     if (index == -1) {
-      // Not in cart yet, add new
       items.add({'product': product, 'quantity': quantity});
     } else {
-      // Already in cart, increase quantity
       items[index]['quantity'] += quantity;
     }
 
-    // Save to prefs
     final jsonList = items.map((e) {
       return jsonEncode({
         'product': e['product'].toJson(),
@@ -90,7 +87,7 @@ class CartStorage {
     final validItems = <Map<String, dynamic>>[];
 
     for (var e in list) {
-      if (e == null || e.isEmpty) continue; // skip invalid
+      if (e == null || e.isEmpty) continue;
 
       try {
         final map = jsonDecode(e);
@@ -101,7 +98,6 @@ class CartStorage {
           'quantity': (map['quantity'] ?? 1) as int,
         });
       } catch (_) {
-        // skip corrupted JSON
         continue;
       }
     }

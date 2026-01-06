@@ -10,6 +10,10 @@ abstract class AppColors {
   static const Color red = Color(0xffDC2626);
   static const Color yellow = Color(0xffFFEB3B);
   static const Color blue = Color(0xff2196F3);
+  static const Color deepOrange = Color(0xffFF5722);
+  static const Color warningBack = Color(0xffFFEFBA);
+  static const Color warningIconColor = Color(0xffBFAA72);
+
 }
 
 class _GreyScale {

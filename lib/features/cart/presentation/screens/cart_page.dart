@@ -8,6 +8,7 @@ import 'package:my_template/core/commons/constants/textstyles/app_text_style.dar
 import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
+import 'package:my_template/features/cart/presentation/screens/confirm_order_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/services/cart_storage/cart_storage.dart';
@@ -326,7 +327,9 @@ class _CartPageState extends State<CartPage> {
                     ),
                     minimumSize: Size(double.infinity, appH(45)),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    AppRoute.go(ConfirmOrderPage());
+                  },
                   child: Text(
                     context.localizations.orderProduct,
                     style: AppTextStyles.source.medium(fontSize: 14),

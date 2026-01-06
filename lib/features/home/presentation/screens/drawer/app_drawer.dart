@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:my_template/core/commons/assets/app_vectors.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
@@ -14,6 +15,7 @@ import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/favourites/presentation/screens/favourites_page.dart';
 import 'package:my_template/features/home/presentation/bloc/category/category_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/category/category_state.dart';
+import 'package:my_template/features/purchase_history/presentation/screens/purchase_history_page.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -45,7 +47,14 @@ class AppDrawer extends StatelessWidget {
               child: BlocBuilder<CategoryBloc, CategoryState>(
                 builder: (context, state) {
                   if (state is CategoryLoading) {
-                    return CircularProgressIndicator.adaptive();
+                    return Column(
+                      children: [
+                        CircularProgressIndicator(
+                          color: AppColors.green,
+                          padding: EdgeInsets.all(10),
+                        ),
+                      ],
+                    );
                   } else if (state is CategoryLoaded) {
                     final item = state.entity;
                     return ExpansionTile(
@@ -120,6 +129,15 @@ class AppDrawer extends StatelessWidget {
               AppRoute.go(FavouritesPage());
             },
           ),
+          ListTile(
+            leading: FaIcon(FontAwesomeIcons.box, color: AppColors.deepOrange),
+            title: Text(context.localizations.purchaseHistory),
+            onTap: () {
+              Navigator.pop(context);
+              AppRoute.go(PurchaseHistoryPage());
+            },
+          ),
+
           // Divider(color: AppColors.greyScale.grey300),
           // ListTile(
           //   iconColor: AppColors.red,
