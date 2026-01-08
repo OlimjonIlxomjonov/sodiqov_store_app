@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/commons/constants/widgets/error_state/api_error_state.dart';
 import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
+import 'package:my_template/features/home/presentation/bloc/home_event.dart';
 
 import '../../bloc/category/category_bloc.dart';
 import '../../bloc/category/category_state.dart';
@@ -68,6 +70,16 @@ class FullCategoriesComponent extends StatelessWidget {
                     ),
                   );
                 },
+              );
+            } else if (state is CategoryError) {
+              return ApiErrorState(
+                onTap: () {
+                  context.read<CategoryBloc>().add(CategoryEvent());
+                },
+              );
+            } else if (state is CategoryLoading) {
+              return Center(
+                child: CircularProgressIndicator(color: AppColors.green),
               );
             }
             return SizedBox.shrink();

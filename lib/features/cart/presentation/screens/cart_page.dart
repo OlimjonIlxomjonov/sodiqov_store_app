@@ -331,7 +331,7 @@ class _CartPageState extends State<CartPage> {
                     AppRoute.go(ConfirmOrderPage());
                   },
                   child: Text(
-                    context.localizations.orderProduct,
+                    context.localizations.continueOrdering,
                     style: AppTextStyles.source.medium(fontSize: 14),
                   ),
                 ),

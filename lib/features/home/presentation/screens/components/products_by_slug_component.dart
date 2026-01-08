@@ -26,6 +26,7 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
   int productAmount = 1;
   int _currentIndex = 0;
   bool _isFav = false;
+  bool _added = false;
 
   @override
   void initState() {
@@ -111,6 +112,32 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                           return Image.network(
                             'https://sodiqovstore.uz/storage/${widget.product.images[index]}',
                             fit: BoxFit.cover,
+
+                            /// ERROR
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: AppColors.cardBackground,
+                                alignment: Alignment.center,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.broken_image_outlined,
+                                      size: 40,
+                                      color: AppColors.greyScale.grey500,
+                                    ),
+                                    SizedBox(height: appH(8)),
+                                    Text(
+                                      'Image not available',
+                                      style: AppTextStyles.source.regular(
+                                        fontSize: 12,
+                                        color: AppColors.greyScale.grey600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           );
                         },
                       ),
@@ -371,30 +398,50 @@ class _ProductsBySlugComponentState extends State<ProductsBySlugComponent> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: _added
+                              ? Colors.green.shade700
+                              : null,
                           minimumSize: Size(double.infinity, appH(45)),
                         ),
                         onPressed: () async {
+                          if (_added) return;
+
                           await CartStorage.addProduct(
                             widget.product,
                             quantity: productAmount,
                           );
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                '${widget.product.name.byLocale(context.locale)} savatga qo\'shildi',
-                              ),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
+                          setState(() => _added = true);
+                          Future.delayed(Duration(seconds: 1), () {
+                            if (mounted) {
+                              setState(() => _added = false);
+                            }
+                          });
                         },
-                        child: Row(
-                          spacing: appW(5),
-                          mainAxisAlignment: .center,
-                          children: [
-                            Icon(Icons.shopping_cart_outlined),
-                            Text(context.localizations.toCart),
-                          ],
+                        child: AnimatedSwitcher(
+                          duration: Duration(milliseconds: 250),
+                          transitionBuilder: (child, animation) {
+                            return ScaleTransition(
+                              scale: animation,
+                              child: FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              ),
+                            );
+                          },
+                          child: _added
+                              ? Icon(
+                                  Icons.shopping_cart_rounded,
+                                  size: appH(22),
+                                )
+                              : Row(
+                                  spacing: appW(5),
+                                  mainAxisAlignment: .center,
+                                  children: [
+                                    Icon(Icons.shopping_cart_outlined),
+                                    Text(context.localizations.toCart),
+                                  ],
+                                ),
                         ),
                       ),
                     ),

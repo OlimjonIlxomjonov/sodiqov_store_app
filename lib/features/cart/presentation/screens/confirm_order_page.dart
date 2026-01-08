@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/commons/constants/widgets/flush_bar/error_flushbar.dart';
+import 'package:my_template/core/commons/constants/widgets/flush_bar/success_flushbar.dart';
 import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/logger/logger.dart';
@@ -76,9 +77,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
     final address = addressController.text.trim();
 
     if (phone.isEmpty || address.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Telefon va manzilni kiriting')));
+      errorFlushBar(context, context.localizations.enterPhoneAndAddress);
       return;
     }
 
@@ -100,7 +99,6 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
               scrolledUnderElevation: 0,
               title: Text(context.localizations.orderProduct),
             ),
-
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.symmetric(
@@ -130,11 +128,11 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                       crossAxisAlignment: .start,
                       children: [
                         Text(
-                          "To'lov",
+                          context.localizations.payment,
                           style: AppTextStyles.source.medium(fontSize: 15),
                         ),
                         Text(
-                          "Naqd pul bilan amalga oshiriladi",
+                          context.localizations.withCash,
                           style: AppTextStyles.source.regular(
                             fontSize: 13,
                             color: AppColors.greyScale.grey900,
@@ -159,7 +157,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                   crossAxisAlignment: .start,
                   children: [
                     Text(
-                      'Telefon raqam kiriting',
+                      context.localizations.enterPhoneNumber,
                       style: AppTextStyles.source.medium(
                         fontSize: 13,
                         color: AppColors.greyScale.grey600,
@@ -182,7 +180,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                             leadingPadding: 20,
                             trailingSpace: false,
                           ),
-                          hintText: 'Telefon raqam',
+                          hintText: context.localizations.phoneNumber,
                           initialValue: number,
                           inputBorder: InputBorder.none,
                           onInputChanged: (value) {
@@ -205,7 +203,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                   children: [
                     SizedBox(height: appH(20)),
                     Text(
-                      'Yetkazib berish manzili',
+                      context.localizations.deliveryAddress,
                       style: AppTextStyles.source.medium(
                         fontSize: 13,
                         color: AppColors.greyScale.grey600,
@@ -213,7 +211,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                     ),
                     CustomTextField(
                       controller: addressController,
-                      hintText: 'Address',
+                      hintText: context.localizations.address,
                       icon: IconlyLight.location,
                     ),
                   ],
@@ -229,7 +227,9 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                   data: ThemeData().copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
                     initiallyExpanded: true,
-                    title: Text('Sizning buyurtmangiz — ${cartItems.length}ta'),
+                    title: Text(
+                      '${context.localizations.yourOrders} — ${cartItems.length}${context.localizations.storage}',
+                    ),
                     children: List.generate(cartItems.length, (index) {
                       final item = cartItems[index];
                       final quantity = productAmounts[item.id.toString()] ?? 1;
@@ -320,7 +320,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                 mainAxisAlignment: .spaceBetween,
                 children: [
                   Text(
-                    'Jami',
+                    context.localizations.totalCost,
                     style: AppTextStyles.source.regular(
                       fontSize: 14,
                       color: AppColors.greyScale.grey600,
@@ -337,13 +337,13 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                   if (state is OrderLoaded) {
                     await CartStorage.clearCart();
                     await _loadCart();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Savatcha tozalandi'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                    successFlushBar(context, context.localizations.success);
                     AppRoute.open(HomePage());
+                  } else if (state is OrderError) {
+                    errorFlushBar(
+                      context,
+                      context.localizations.errorOccurredTryLater,
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -356,7 +356,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                     onPressed: sendOrder,
                     child: isLoading
                         ? CircularProgressIndicator(color: AppColors.greenFade)
-                        : Text('Buyurtma berish'),
+                        : Text(context.localizations.orderProduct),
                   );
                 },
               ),

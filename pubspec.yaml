@@ -27,6 +27,7 @@ dependencies:
   flutter_gen: ^5.12.0
   font_awesome_flutter: ^10.12.0
   intl_phone_number_input: ^0.7.5
+  another_flushbar: ^1.12.32
 
 
 dev_dependencies:

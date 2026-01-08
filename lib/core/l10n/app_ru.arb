@@ -19,5 +19,19 @@
   "allProducts": "Bce продукты",
   "productCost": "Цена",
   "orderProduct": "Оформить",
-  "purchaseHistory": "Мои заказы"
+  "purchaseHistory": "Мои заказы",
+  "somethingWentWrong": "Что-то пошло не так",
+  "checkInternetConnectionAndTryAgain": "Проверьте подключение к интернету и попробуйте обновить страницу.",
+  "tryAgain": "Повторить",
+  "payment": "Оплата",
+  "withCash": "Оплата наличными",
+  "enterPhoneNumber": "Введите номер телефона",
+  "phoneNumber": "Номер телефона",
+  "deliveryAddress": "Адрес доставки",
+  "address": "Адрес",
+  "yourOrders": "Ваши заказы",
+  "continueOrdering": "Продолжить",
+  "enterPhoneAndAddress": "Введите телефон и адрес",
+  "success": "Успех!",
+  "errorOccurredTryLater": "Произошла ошибка, пожалуйста, попробуйте позже."
 }

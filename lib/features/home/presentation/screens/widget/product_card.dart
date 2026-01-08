@@ -33,6 +33,7 @@ class ProductCard extends StatefulWidget {
 class _ProductCardState extends State<ProductCard> {
   final _priceFormatter = NumberFormat('#,##0', 'en_US');
   bool _isFav = false;
+  bool _added = false;
 
   @override
   void initState() {
@@ -158,20 +159,39 @@ class _ProductCardState extends State<ProductCard> {
                             backgroundColor: AppColors.green,
                           ),
                           onPressed: () async {
+                            if (_added) return;
+
                             await CartStorage.addProduct(widget.item);
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '${widget.item.name.uz} savatchaga qo\'shildi',
-                                ),
-                                duration: Duration(seconds: 1),
-                              ),
-                            );
-
                             widget.onAddToCart?.call();
+
+                            setState(() => _added = true);
+
+                            Future.delayed(
+                              const Duration(milliseconds: 900),
+                              () {
+                                if (mounted) {
+                                  setState(() => _added = false);
+                                }
+                              },
+                            );
                           },
-                          icon: Icon(Icons.add, color: AppColors.white),
+                          icon: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 250),
+                            transitionBuilder: (child, animation) {
+                              return ScaleTransition(
+                                scale: animation,
+                                child: FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: Icon(
+                              _added ? Icons.check : Icons.add,
+                              key: ValueKey(_added),
+                              color: AppColors.white,
+                            ),
+                          ),
                         ),
                       ],
                     ),

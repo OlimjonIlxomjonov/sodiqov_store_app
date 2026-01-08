@@ -5,6 +5,7 @@ import 'package:iconly/iconly.dart';
 import 'package:my_template/core/commons/assets/app_vectors.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/commons/constants/widgets/error_state/api_error_state.dart';
 import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
@@ -374,6 +375,16 @@ class _HomePageState extends State<HomePage> {
                             color: AppColors.green,
                           ),
                         ),
+                      ),
+                    );
+                  } else if (state is ProductsError) {
+                    return SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: ApiErrorState(
+                        onTap: () {
+                          context.read<ProductsBloc>().add(ProductsEvent(1));
+                          context.read<CategoryBloc>().add(CategoryEvent());
+                        },
                       ),
                     );
                   } else {

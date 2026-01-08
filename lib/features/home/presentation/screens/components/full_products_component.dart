@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconly/iconly.dart';
-import 'package:intl/intl.dart';
 import 'package:my_template/core/commons/constants/colors/app_colors.dart';
 import 'package:my_template/core/commons/constants/textstyles/app_text_style.dart';
+import 'package:my_template/core/commons/constants/widgets/error_state/api_error_state.dart';
 import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
-import 'package:my_template/features/home/domain/entity/products/products_entity.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_bloc.dart';
 import 'package:my_template/features/home/presentation/bloc/products/products_state.dart';
 import 'package:my_template/features/home/presentation/screens/widget/product_card.dart';
@@ -140,6 +138,14 @@ class _FullProductsComponentState extends State<FullProductsComponent> {
                         child: CircularProgressIndicator(
                           color: AppColors.green,
                         ),
+                      ),
+                    );
+                  } else if (state is ProductsError) {
+                    return SliverFillRemaining(
+                      child: ApiErrorState(
+                        onTap: () {
+                          context.read<ProductsBloc>().add(ProductsEvent(1));
+                        },
                       ),
                     );
                   }
