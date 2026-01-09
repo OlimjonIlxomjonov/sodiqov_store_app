@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +7,6 @@ import 'package:my_template/core/extensions/context_extension.dart';
 import 'package:my_template/core/routes/route_generator.dart';
 import 'package:my_template/core/utils/responsiveness/app_responsiveness.dart';
 import 'package:my_template/features/cart/presentation/screens/confirm_order_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../core/services/cart_storage/cart_storage.dart';
 import '../../../home/domain/entity/products/products_entity.dart';
 
@@ -259,16 +255,6 @@ class _CartPageState extends State<CartPage> {
                                               item.id,
                                             );
                                             await _loadCart();
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  '${item.name.uz} savatchadan o\'chirildi',
-                                                ),
-                                                duration: Duration(seconds: 1),
-                                              ),
-                                            );
                                             widget.onCartChanged?.call();
                                           },
                                         ),

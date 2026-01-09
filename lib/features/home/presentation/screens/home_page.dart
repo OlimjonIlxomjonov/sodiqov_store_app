@@ -16,6 +16,8 @@ import 'package:my_template/features/home/presentation/screens/components/full_c
 import 'package:my_template/features/home/presentation/screens/components/full_products_component.dart';
 import 'package:my_template/features/home/presentation/screens/drawer/app_drawer.dart';
 import 'package:my_template/features/home/presentation/screens/widget/product_card.dart';
+import 'package:my_template/features/home/presentation/screens/widget/shimmers/category_shimmer/category_shimmer.dart';
+import 'package:my_template/features/home/presentation/screens/widget/shimmers/product_shimmer/products_grid_shimmer.dart';
 
 import '../../../../core/services/cart_storage/cart_storage.dart';
 import '../bloc/category/category_bloc.dart';
@@ -282,9 +284,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             );
                           } else if (state is CategoryLoading) {
-                            return LinearProgressIndicator(
-                              color: AppColors.green,
-                            );
+                            return CategoryShimmer();
                           }
                           return SizedBox.shrink();
                         },
@@ -367,16 +367,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   } else if (state is ProductsLoading) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: appH(50)),
-                          child: CircularProgressIndicator(
-                            color: AppColors.green,
-                          ),
-                        ),
-                      ),
-                    );
+                    return ProductsGridShimmer();
                   } else if (state is ProductsError) {
                     return SliverFillRemaining(
                       hasScrollBody: false,

@@ -16,9 +16,13 @@ import 'package:my_template/features/cart/presentation/bloc/order/order_bloc.dar
 import 'package:my_template/features/cart/presentation/bloc/order/order_state.dart';
 import 'package:my_template/features/cart/presentation/screens/widgets/custom_text_field.dart';
 import 'package:my_template/features/home/presentation/screens/home_page.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../core/services/cart_storage/cart_storage.dart';
+import '../../../../core/services/purchase_history_storage/purchase_hisotry_storage.dart';
 import '../../../home/domain/entity/products/products_entity.dart';
+import '../../../purchase_history/domain/entity/local_purchase_history/purchase_history_entity.dart';
+import '../../../purchase_history/domain/entity/local_purchase_history/purchase_item_entity.dart';
 
 class ConfirmOrderPage extends StatefulWidget {
   const ConfirmOrderPage({super.key});
@@ -335,8 +339,27 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
               BlocConsumer<OrderBloc, OrderState>(
                 listener: (context, state) async {
                   if (state is OrderLoaded) {
+                    final itemsWithQty =
+                        await CartStorage.getCartWithQuantity();
+
+                    final purchase = PurchaseHistoryEntity(
+                      id: const Uuid().v4(),
+                      purchasedAt: DateTime.now(),
+                      phone: phoneNumber!,
+                      address: addressController.text,
+                      totalPrice: totalPrice,
+                      items: itemsWithQty.map((e) {
+                        return PurchaseItemEntity(
+                          product: e['product'],
+                          quantity: e['quantity'],
+                        );
+                      }).toList(),
+                    );
+
+                    await PurchaseHistoryStorage.addPurchase(purchase);
                     await CartStorage.clearCart();
                     await _loadCart();
+
                     successFlushBar(context, context.localizations.success);
                     AppRoute.open(HomePage());
                   } else if (state is OrderError) {
